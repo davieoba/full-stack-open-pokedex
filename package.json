@@ -9,6 +9,7 @@
     "test": "jest",
     "eslint": "eslint './**/*.{js,jsx}'",
     "lint": "eslint \"**/*.{js, jsx}\"",
+    "test:e2e": "cypress run",
     "build": "webpack --mode production"
   },
   "repository": {
@@ -47,6 +48,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "cypress": "^12.17.1",
     "eslint-plugin-cypress": "^2.13.3",
     "express": "^4.17.1",
     "react": "^16.13.1",
