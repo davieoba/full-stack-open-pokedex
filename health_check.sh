@@ -1,5 +1,5 @@
 #!/bin/bash
-
+chmod +x health_check.sh
 
 echo "Hello from shell script"
 
