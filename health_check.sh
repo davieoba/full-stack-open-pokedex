@@ -1,5 +1,6 @@
 #!/bin/bash
-chmod +x ./health_check.sh
+
+
 echo "Hello from shell script"
 
 npm install curl
@@ -13,3 +14,4 @@ if["$response" == "ok"];then
 else
   echo "Health check failed: $response"
   exit 1 # exit status 1 means that the script "fails"
+chmod +x ./health_check.sh
