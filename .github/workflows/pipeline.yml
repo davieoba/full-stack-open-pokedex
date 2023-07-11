@@ -24,5 +24,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with: 
           command: npm run test:e2e
-          start: npm run start
-          wait-on: http://localhost:8080
+          start: npm run start-prod
+          wait-on: http://localhost:5000
+      - name: Trigger Deployment
+        run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICE_ID}}?key=${{secrets.RENDER_API_KEY}}
