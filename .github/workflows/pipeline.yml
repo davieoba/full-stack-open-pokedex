@@ -4,7 +4,10 @@ on:
   push:
     branches:
       - master
-      # note that your "main" branch might be called main instead of master
+  pull_request: 
+    branches:
+      - master
+    types: [opened, synchronize]
 
 jobs:
   simple_deployment_pipeline:
@@ -28,6 +31,7 @@ jobs:
           wait-on: http://localhost:5000
       # - name: Trigger Deployment
       #   run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICE_ID}}?key=${{secrets.RENDER_API_KEY}}
+        if: ${{github.event_name == 'push'}}
       - name: Wait for Render Deployment
         uses: johnbeynon/render-deploy-action@v0.0.8
         with: 
@@ -38,6 +42,7 @@ jobs:
           RENDER_TOKEN: ${{secrets.RENDER_API_KEY}}
           GITHUB_SHA: ${{ github.sha }}
           SERVICE_ID: ${{secrets.RENDER_SERVICE_ID}}
+        if: ${{github.event_name == 'push'}}
         run: |
           chmod +x health_check.sh 
           ./health_check.sh
