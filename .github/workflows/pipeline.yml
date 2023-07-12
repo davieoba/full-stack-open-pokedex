@@ -34,6 +34,10 @@ jobs:
           api-key: ${{secrets.RENDER_API_KEY}}
           service-id: ${{secrets.RENDER_SERVICE_ID}}
       - name: Trigger health test
+        env: 
+          RENDER_TOKEN: ${{secrets.RENDER_API_KEY}}
+          GITHUB_SHA: ${{ github.sha }}
+          SERVICE_ID: ${{secrets.RENDER_SERVICE_ID}}
         run: |
           chmod +x health_check.sh 
           ./health_check.sh
