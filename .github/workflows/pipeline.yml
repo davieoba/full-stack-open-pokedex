@@ -37,6 +37,7 @@ jobs:
         with: 
           api-key: ${{secrets.RENDER_API_KEY}}
           service-id: ${{secrets.RENDER_SERVICE_ID}}
+        if: ${{github.event_name == 'push'}}
       - name: Trigger health test
         env: 
           RENDER_TOKEN: ${{secrets.RENDER_API_KEY}}
