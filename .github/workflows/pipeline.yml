@@ -34,6 +34,7 @@ jobs:
           api-key: ${{secrets.RENDER_API_KEY}}
           service-id: ${{secrets.RENDER_SERVICE_ID}}
       - name: Trigger health test
-        run:
+        run: |
           chmod +x health_check.sh 
           ./health_check.sh
+          
