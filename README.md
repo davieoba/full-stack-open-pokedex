@@ -15,3 +15,4 @@ Start by running `npm install` inside the project folder
 `npm run start-prod` to run your production build
 
 ## Versioning
+For the versioning use a third part action in github workplace and configure it
