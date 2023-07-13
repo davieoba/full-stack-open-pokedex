@@ -63,8 +63,12 @@ jobs:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
         if: contains(github.event.head_commit.message, '#skip')
+      - name: Stop version bump
+        if: github.ref == 'refs/heads/master' && env.COMMIT_MESSAGES == 'true'
+        run: |
+          echo "Commit mesage contains #skip. Stopping the job"
+          exit 0
       - name: Bump version and push tag
-        if: github.ref == 'refs/heads/master' && env.COMMIT_MESSAGES != 'true'
         uses: anothrNick/github-tag-action@1.64.0
         env: 
           GITHUB_TOKEN: ${{secrets.GIT_SECRET}}
