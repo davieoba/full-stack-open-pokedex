@@ -48,16 +48,23 @@ jobs:
           ./health_check.sh
 
   tag_release:
-    needs: [simple_deployment_pipeline]
+    needs: simple_deployment_pipeline
     runs-on: ubuntu-20.04
     
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: '16'
+      - name: Commit messages
+        env:
+          COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
+        run: echo "$COMMIT_MESSAGES"
+        if: contains(github.event.head_commit.message, '#skip')
       - name: Bump version and push tag
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' && env.COMMIT_MESSAGES != 'true'
         uses: anothrNick/github-tag-action@1.64.0
         env: 
           GITHUB_TOKEN: ${{secrets.GIT_SECRET}}
