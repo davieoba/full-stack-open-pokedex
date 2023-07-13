@@ -31,8 +31,8 @@ jobs:
           wait-on: http://localhost:5000
       # - name: Trigger Deployment
       #   run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICE_ID}}?key=${{secrets.RENDER_API_KEY}}
-        if: ${{github.event_name == 'push'}}
       - name: Wait for Render Deployment
+        if: ${{github.event_name == 'push'}}
         uses: johnbeynon/render-deploy-action@v0.0.8
         with: 
           api-key: ${{secrets.RENDER_API_KEY}}
@@ -46,4 +46,15 @@ jobs:
         run: |
           chmod +x health_check.sh 
           ./health_check.sh
-          
+
+  tag_release:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Bump version and push tag
+        if: ${{github.ref == 'refs/heads/master'}}
+        uses: anothrNick/github-tag-action@1.67.0
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DEFAULT_BUMP: patch
