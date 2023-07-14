@@ -63,7 +63,7 @@ jobs:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
       - name: CHECK
-        run: echo "env.COMMIT_MESSAGES"
+        run: echo "$env.COMMIT_MESSAGES"
       - name: Stop version bump
         if: contains(github.event.head_commit.message, '#skip') && github.ref == 'refs/heads/master'
         run: |
@@ -76,3 +76,4 @@ jobs:
           WITH_V: true
           DEFAULT_BUMP: patch
           RELEASE_BRANCHES: master
+          DRY_RUN: true
