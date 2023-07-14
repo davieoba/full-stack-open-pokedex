@@ -58,22 +58,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16'
-      - name: Commit messages
-        env:
-          COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
-        run: echo "$COMMIT_MESSAGES"
-      - name: CHECK
-        run: echo "$env.COMMIT_MESSAGES"
-      - name: Stop version bump
-        if: contains(github.event.head_commit.message, '#skip') && github.ref == 'refs/heads/master'
-        run: |
-          echo "Commit mesage contains #skip. Stopping the job"
-          exit 0
       - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.64.0
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ', '), '#skip') }}
+        uses: anothrNick/github-tag-action@c360518fb8131e99795f8208f8a6105ceca55ec2
         env: 
           GITHUB_TOKEN: ${{secrets.GIT_SECRET}}
           WITH_V: true
           DEFAULT_BUMP: patch
           RELEASE_BRANCHES: master
-          DRY_RUN: true
+          DRY_RUN: false
