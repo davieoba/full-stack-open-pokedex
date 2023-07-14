@@ -62,9 +62,10 @@ jobs:
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
-        if: contains(github.event.head_commit.message, '#skip')
+      - name: CHECK
+        run: echo "env.COMMIT_MESSAGES"
       - name: Stop version bump
-        if: github.ref == 'refs/heads/master' && env.COMMIT_MESSAGES == 'true'
+        if: contains(github.event.head_commit.message, '#skip') && github.ref == 'refs/heads/master'
         run: |
           echo "Commit mesage contains #skip. Stopping the job"
           exit 0
